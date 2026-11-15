@@ -8,21 +8,21 @@ Course project No. 46, *Serious Video Games Catalogue – 2*, for **XML Technolo
 
 | Requirement of the assignment | Where it is done |
 |---|---|
-| Text and graphic content in XML | `src/games.xml` |
+| Text and graphic content in XML | `src/serious_games.xml` |
 | Graphics through **XML entities** | every image is an unparsed entity (`<!ENTITY … SYSTEM "…" NDATA jpeg>`) declared in the `DOCTYPE` and referenced by `source="…"` |
-| Relations through **(composite) keys and key references** | `src/games.xsd`: `xs:key` / `xs:keyref` (see below) |
-| 7–8 games validated with **XML Schema** | 8 games, validated by `src/games.xsd` |
-| Presentation in a browser with **CSS and XSLT** | `src/games.xsl` (XSLT 1.0) and `src/styles.css` |
+| Relations through **(composite) keys and key references** | `src/serious_games.xsd`: `xs:key` / `xs:keyref` (see below) |
+| 7–8 games validated with **XML Schema** | 8 games, validated by `src/serious_games.xsd` |
+| Presentation in a browser with **CSS and XSLT** | `src/serious_games.xsl` (XSLT 1.0) and `src/styles.css` |
 | **Sorting** by several properties | sector, purpose, title, year (two-level sort) |
 
 ### Taxonomy and keys
 
-The games are classified with the taxonomy of Ben Sawyer and Peter Smith, *Serious Games Taxonomy* (2008): a grid of **7 sectors (rows) × 7 purposes (columns) = 49 cells**. All 49 cells and their labels are stored in `src/games.xml`.
+The games are classified with the taxonomy of Ben Sawyer and Peter Smith, *Serious Games Taxonomy* (2008): a grid of **7 sectors (rows) × 7 purposes (columns) = 49 cells**. All 49 cells and their labels are stored in `src/serious_games.xml`.
 
 - **Sectors:** Government & NGO, Defense, Healthcare, Marketing & Communications, Education, Corporate, Industry.
 - **Purposes:** Games for Health, Advergames, Games for Training, Games for Education, Games for Science and Research, Production, Games as Work.
 
-Composite keys in `src/games.xsd`:
+Composite keys in `src/serious_games.xsd`:
 
 | Key | Fields | Referenced by |
 |---|---|---|
@@ -52,7 +52,7 @@ Most of them are named in the taxonomy presentation or in B. Bontchev, *Serious 
 - **Sort by** sector then purpose, purpose then sector, title or year, ascending or descending.
 - **Filter by** sector and purpose.
 
-The XML file points to the stylesheet with `<?xml-stylesheet href="games.xsl" type="text/xsl"?>`. The first page is rendered by the browser itself. After that, a small script re-runs the transformation with `XSLTProcessor` and parameters (sorting, filters, selected game), so the page updates without reloading.
+The XML file points to the stylesheet with `<?xml-stylesheet href="serious_games.xsl" type="text/xsl"?>`. The first page is rendered by the browser itself. After that, a small script re-runs the transformation with `XSLTProcessor` and parameters (sorting, filters, selected game), so the page updates without reloading.
 
 ## Running it
 
@@ -63,28 +63,28 @@ cd src
 python3 -m http.server 8080
 ```
 
-Then open <http://localhost:8080/games.xml>. An internet connection is needed to see the images.
+Then open <http://localhost:8080/serious_games.xml>. An internet connection is needed to see the images.
 
 Validate the data against the schema (from the `src` folder):
 
 ```bash
-xmllint --noout --schema games.xsd games.xml
+xmllint --noout --schema serious_games.xsd serious_games.xml
 ```
 
 Try the transformation without a browser (from the `src` folder):
 
 ```bash
-xsltproc games.xsl games.xml
-xsltproc --stringparam loadDocument false --stringparam sortOn purpose games.xsl games.xml
+xsltproc serious_games.xsl serious_games.xml
+xsltproc --stringparam loadDocument false --stringparam sortOn purpose serious_games.xsl serious_games.xml
 ```
 
 ## Project structure
 
 | Path | Purpose |
 |---|---|
-| `src/games.xml` | Data: taxonomy (49 cells), developers, platforms, 8 games, image entities |
-| `src/games.xsd` | XML Schema with all keys and key references |
-| `src/games.xsl` | XSLT 1.0 transformation, including the small script for sorting and filtering |
+| `src/serious_games.xml` | Data: taxonomy (49 cells), developers, platforms, 8 games, image entities |
+| `src/serious_games.xsd` | XML Schema with all keys and key references |
+| `src/serious_games.xsl` | XSLT 1.0 transformation, including the small script for sorting and filtering |
 | `src/styles.css` | Styling |
 | `CLAUDE.md` | Notes about the project for AI coding assistants |
 | `LICENSE` | MIT license |

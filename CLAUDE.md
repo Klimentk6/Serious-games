@@ -15,9 +15,9 @@ A catalogue of serious video games based on XML with text and graphic content.
 ## Files
 | File | Role |
 |---|---|
-| `src/games.xml` | Data. Internal `DOCTYPE` with the image entities, `<?xml-stylesheet href="games.xsl"?>`, `xsi:noNamespaceSchemaLocation="games.xsd"` |
-| `src/games.xsd` | Schema with all keys and references (declared on the root element `catalogue`) |
-| `src/games.xsl` | XSLT 1.0 (required by `XSLTProcessor` in browsers). Generates the HTML and links `styles.css` with `<link>` |
+| `src/serious_games.xml` | Data. Internal `DOCTYPE` with the image entities, `<?xml-stylesheet href="serious_games.xsl"?>`, `xsi:noNamespaceSchemaLocation="serious_games.xsd"` |
+| `src/serious_games.xsd` | Schema with all keys and references (declared on the root element `catalogue`) |
+| `src/serious_games.xsl` | XSLT 1.0 (required by `XSLTProcessor` in browsers). Generates the HTML and links `styles.css` with `<link>` |
 | `src/styles.css` | All the CSS. The assignment asks for "CSS and XSLT", so styles are in a separate file and not embedded in the XSL |
 | `README.md` | Description of the project and how to run it |
 
@@ -47,7 +47,7 @@ Sources: Civilization IV, Brain Age, DDR, America's Army and The Movies appear i
 
 ## How the XSLT works
 - Parameters: `loadDocument`, `showAll`, `showId`, `sortOn`, `sortOrder`, `sortType`, `filterSector`, `filterPurpose`. Two views: a list of cards and the details of one game. The 49 cells stay in the XML and are used for the "Taxonomy cell" text in the details.
-- The first load is done directly by the browser through the processing instruction (`loadDocument=true`) and produces the whole page. After that, the embedded JavaScript fetches `games.xsl` and `games.xml`, runs `XSLTProcessor` with `loadDocument=false` and replaces only `#content`.
+- The first load is done directly by the browser through the processing instruction (`loadDocument=true`) and produces the whole page. After that, the embedded JavaScript fetches `serious_games.xsl` and `serious_games.xml`, runs `XSLTProcessor` with `loadDocument=false` and replaces only `#content`.
 - Sorting uses **two keys**: the selected one (`<xsl:sort select="@*[name()=$sortOn] | *[name()=$sortOn]">`, works for elements and attributes: `sector`, `purpose`, `title`, `year`) and a second one (`$secondary`: sector -> purpose, purpose -> sector, otherwise title). The values of `sector`/`purpose` are the names themselves, so the order is alphabetical.
 - The XSL keys `classificationByPair` (`concat(@sector,'|',@purpose)`) and `gameByTitleYear` mirror the composite keys of the XSD.
 - Images: the template writes `src="{@source}"` (the name of the entity). The `imageUrlsMap` script (generated with `unparsed-entity-uri`) replaces the name with the real address. After `DOMParser` the information about entities is lost, which is why this trick is needed.
@@ -58,14 +58,14 @@ Sources: Civilization IV, Brain Age, DDR, America's Army and The Movies appear i
 cd src
 
 # Validation
-xmllint --noout --schema games.xsd games.xml
+xmllint --noout --schema serious_games.xsd serious_games.xml
 
 # Run (fetch and XSL do not work over file://, a server is needed)
-python3 -m http.server 8080      # then http://localhost:8080/games.xml
+python3 -m http.server 8080      # then http://localhost:8080/serious_games.xml
 
 # Quick test of the transformation without a browser
-xsltproc games.xsl games.xml
-xsltproc --stringparam loadDocument false --stringparam sortOn purpose games.xsl games.xml
+xsltproc serious_games.xsl serious_games.xml
+xsltproc --stringparam loadDocument false --stringparam sortOn purpose serious_games.xsl serious_games.xml
 ```
 Chromium-based browsers do not load the XSL over `file://`, so a development server is used.
 

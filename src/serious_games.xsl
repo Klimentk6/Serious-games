@@ -2,7 +2,7 @@
 <!--
   XSLT 1.0 transformation for the Serious Games Catalogue.
   It works in two ways:
-    1) directly through <?xml-stylesheet?> in games.xml (first page load);
+    1) directly through <?xml-stylesheet?> in serious_games.xml (first page load);
     2) through XSLTProcessor from JavaScript (loadDocument=false) - when sorting, filtering and showing details.
   The state is passed to the stylesheet as parameters.
   Classification of a game: sector (rows) x purpose (columns) - Sawyer & Smith taxonomy.
@@ -155,7 +155,7 @@ function showAllGames() {
 
 function initialize() {
     var parser = new DOMParser();
-    Promise.all([fetch("games.xsl"), fetch("games.xml")]).then(function (responses) {
+    Promise.all([fetch("serious_games.xsl"), fetch("serious_games.xml")]).then(function (responses) {
         return Promise.all(responses.map(function (r) { return r.text(); }));
     }).then(function (texts) {
         xsltProcessor = new XSLTProcessor();
