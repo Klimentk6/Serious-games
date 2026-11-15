@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="games.xsl" type="text/xsl"?>
+<!DOCTYPE catalogue [
+	<!NOTATION jpeg SYSTEM "image/jpeg">
+	<!NOTATION png  SYSTEM "image/png">
+
+	<!-- Корици: външни адреси (Wikimedia Commons / Wikipedia), без локални файлове -
+	     по същия начин, по който example_project сочи към cf.bstatic.com. -->
+	<!ENTITY civ4_cover         SYSTEM "https://upload.wikimedia.org/wikipedia/en/7/7e/CivIVboxshot.jpg" NDATA jpeg>
+	<!ENTITY ac2_cover          SYSTEM "https://upload.wikimedia.org/wikipedia/en/7/77/Assassins_Creed_2_Box_Art.JPG" NDATA jpeg>
+	<!ENTITY brainage_cover     SYSTEM "https://upload.wikimedia.org/wikipedia/en/e/ef/NDS_BrainTrainingForAdults.jpg" NDATA jpeg>
+	<!ENTITY ddr_cover          SYSTEM "https://upload.wikimedia.org/wikipedia/commons/8/8d/DDR_20th_anniversary_model_arcade_cabinet_%280%29.jpg" NDATA jpeg>
+	<!ENTITY americasarmy_cover SYSTEM "https://upload.wikimedia.org/wikipedia/commons/c/c3/AA2GameCover.jpg" NDATA jpeg>
+	<!ENTITY fullspectrum_cover SYSTEM "https://upload.wikimedia.org/wikipedia/en/6/63/FullSpectrumWarriorPC.jpg" NDATA jpeg>
+	<!ENTITY themovies_cover    SYSTEM "https://upload.wikimedia.org/wikipedia/en/d/db/The_Movies_Coverart.jpg" NDATA jpeg>
+	<!ENTITY foldit_cover       SYSTEM "https://upload.wikimedia.org/wikipedia/commons/b/bb/Foldit_screenshot_2.jpg" NDATA jpeg>
+]>
+<catalogue xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="games.xsd">
+
+	<!-- ====================================================================
+	     Таксономия на Sawyer & Smith (2008), слайд "Taxonomy of Serious Games":
+	     редове = сектор (sector), колони = цел (purpose), 7 x 7 = 49 клетки.
+	     Всяка клетка се идентифицира със СЪСТАВЕН ключ (sector, purpose).
+	     ==================================================================== -->
+	<taxonomy>
+		<source>B. Sawyer, P. Smith, "Serious Games Taxonomy", Game Developers Conference / Serious Games Summit, 2008</source>
+		<sectors>
+			<sector name="Government &amp; NGO" />
+			<sector name="Defense" />
+			<sector name="Healthcare" />
+			<sector name="Marketing &amp; Communications" />
+			<sector name="Education" />
+			<sector name="Corporate" />
+			<sector name="Industry" />
+		</sectors>
+		<purposes>
+			<purpose name="Games for Health">
+				<description>Games that support treatment, therapy, exercise or healthy behaviour.</description>
+			</purpose>
+			<purpose name="Advergames">
+				<description>Games that promote an organisation, a product, a cause or recruitment.</description>
+			</purpose>
+			<purpose name="Games for Training">
+				<description>Games and simulations that teach practical skills and procedures.</description>
+			</purpose>
+			<purpose name="Games for Education">
+				<description>Games used to teach knowledge, including commercial games repurposed for learning.</description>
+			</purpose>
+			<purpose name="Games for Science and Research">
+				<description>Games that use players' effort to collect data or solve scientific problems.</description>
+			</purpose>
+			<purpose name="Production">
+				<description>Games and game tools used to create other media or to support production and planning.</description>
+			</purpose>
+			<purpose name="Games as Work">
+				<description>Games that turn real work tasks into a game-like activity.</description>
+			</purpose>
+		</purposes>
+		<classifications>
+			<!-- Government &amp; NGO -->
+			<classification sector="Government &amp; NGO" purpose="Games for Health"><label>Public Health Education &amp; Mass Casualty Response</label></classification>
+			<classification sector="Government &amp; NGO" purpose="Advergames"><label>Political Games</label></classification>
+			<classification sector="Government &amp; NGO" purpose="Games for Training"><label>Employee Training</label></classification>
+			<classification sector="Government &amp; NGO" purpose="Games for Education"><label>Inform Public</label></classification>
+			<classification sector="Government &amp; NGO" purpose="Games for Science and Research"><label>Data Collection / Planning</label></classification>
+			<classification sector="Government &amp; NGO" purpose="Production"><label>Strategic &amp; Policy Planning</label></classification>
+			<classification sector="Government &amp; NGO" purpose="Games as Work"><label>Public Diplomacy, Opinion Research</label></classification>
+			<!-- Defense -->
+			<classification sector="Defense" purpose="Games for Health"><label>Rehabilitation &amp; Wellness</label></classification>
+			<classification sector="Defense" purpose="Advergames"><label>Recruitment &amp; Propaganda</label></classification>
+			<classification sector="Defense" purpose="Games for Training"><label>Soldier/Support Training</label></classification>
+			<classification sector="Defense" purpose="Games for Education"><label>School House Education</label></classification>
+			<classification sector="Defense" purpose="Games for Science and Research"><label>Wargames / planning</label></classification>
+			<classification sector="Defense" purpose="Production"><label>War planning &amp; weapons research</label></classification>
+			<classification sector="Defense" purpose="Games as Work"><label>Command &amp; Control</label></classification>
+			<!-- Healthcare -->
+			<classification sector="Healthcare" purpose="Games for Health"><label>Cybertherapy / Exergaming</label></classification>
+			<classification sector="Healthcare" purpose="Advergames"><label>Public Health Policy &amp; Social Awareness Campaigns</label></classification>
+			<classification sector="Healthcare" purpose="Games for Training"><label>Training Games for Health Professionals</label></classification>
+			<classification sector="Healthcare" purpose="Games for Education"><label>Games for Patient Education and Disease Management</label></classification>
+			<classification sector="Healthcare" purpose="Games for Science and Research"><label>Visualization &amp; Epidemiology</label></classification>
+			<classification sector="Healthcare" purpose="Production"><label>Biotech manufacturing &amp; design</label></classification>
+			<classification sector="Healthcare" purpose="Games as Work"><label>Public Health Response Planning &amp; Logistics</label></classification>
+			<!-- Marketing &amp; Communications -->
+			<classification sector="Marketing &amp; Communications" purpose="Games for Health"><label>Advertising Treatment</label></classification>
+			<classification sector="Marketing &amp; Communications" purpose="Advergames"><label>Advertising, marketing with games, product placement</label></classification>
+			<classification sector="Marketing &amp; Communications" purpose="Games for Training"><label>Product Use</label></classification>
+			<classification sector="Marketing &amp; Communications" purpose="Games for Education"><label>Product Information</label></classification>
+			<classification sector="Marketing &amp; Communications" purpose="Games for Science and Research"><label>Opinion Research</label></classification>
+			<classification sector="Marketing &amp; Communications" purpose="Production"><label>Machinima</label></classification>
+			<classification sector="Marketing &amp; Communications" purpose="Games as Work"><label>Opinion Research</label></classification>
+			<!-- Education -->
+			<classification sector="Education" purpose="Games for Health"><label>Inform about diseases/risks</label></classification>
+			<classification sector="Education" purpose="Advergames"><label>Social Issue Games</label></classification>
+			<classification sector="Education" purpose="Games for Training"><label>Train teachers / Train workforce skills</label></classification>
+			<classification sector="Education" purpose="Games for Education"><label>Learning</label></classification>
+			<classification sector="Education" purpose="Games for Science and Research"><label>Computer Science &amp; Recruitment</label></classification>
+			<classification sector="Education" purpose="Production"><label>P2P Learning, Constructivism, Documentary?</label></classification>
+			<classification sector="Education" purpose="Games as Work"><label>Teaching, Distance Learning</label></classification>
+			<!-- Corporate -->
+			<classification sector="Corporate" purpose="Games for Health"><label>Employee Health Information &amp; Wellness</label></classification>
+			<classification sector="Corporate" purpose="Advergames"><label>Customer Education &amp; Awareness</label></classification>
+			<classification sector="Corporate" purpose="Games for Training"><label>Employee Training</label></classification>
+			<classification sector="Corporate" purpose="Games for Education"><label>Continuing Education &amp; Certification</label></classification>
+			<classification sector="Corporate" purpose="Games for Science and Research"><label>Advertising / visualization</label></classification>
+			<classification sector="Corporate" purpose="Production"><label>Strategic Planning</label></classification>
+			<classification sector="Corporate" purpose="Games as Work"><label>Command &amp; Control</label></classification>
+			<!-- Industry -->
+			<classification sector="Industry" purpose="Games for Health"><label>Occupational Safety</label></classification>
+			<classification sector="Industry" purpose="Advergames"><label>Sales &amp; Recruitment</label></classification>
+			<classification sector="Industry" purpose="Games for Training"><label>Employee Training</label></classification>
+			<classification sector="Industry" purpose="Games for Education"><label>Workforce Education</label></classification>
+			<classification sector="Industry" purpose="Games for Science and Research"><label>Process Optimization Simulation</label></classification>
+			<classification sector="Industry" purpose="Production"><label>Nano/Bio-tech Design</label></classification>
+			<classification sector="Industry" purpose="Games as Work"><label>Command &amp; Control</label></classification>
+		</classifications>
+	</taxonomy>
+
+	<developers>
+		<developer id="firaxis" kind="Commercial">
+			<name>Firaxis Games</name>
+			<country>United States</country>
+		</developer>
+		<developer id="ubisoft-montreal" kind="Commercial">
+			<name>Ubisoft Montreal</name>
+			<country>Canada</country>
+		</developer>
+		<developer id="nintendo" kind="Commercial">
+			<name>Nintendo</name>
+			<country>Japan</country>
+		</developer>
+		<developer id="konami" kind="Commercial">
+			<name>Konami</name>
+			<country>Japan</country>
+		</developer>
+		<developer id="us-army" kind="Government">
+			<name>United States Army</name>
+			<country>United States</country>
+		</developer>
+		<developer id="pandemic" kind="Commercial">
+			<name>Pandemic Studios</name>
+			<country>United States</country>
+		</developer>
+		<developer id="lionhead" kind="Commercial">
+			<name>Lionhead Studios</name>
+			<country>United Kingdom</country>
+		</developer>
+		<developer id="uw-gcs" kind="Academic">
+			<name>University of Washington, Center for Game Science</name>
+			<country>United States</country>
+		</developer>
+	</developers>
+
+	<platforms>
+		<platform id="windows">Windows</platform>
+		<platform id="macos">macOS</platform>
+		<platform id="linux">Linux</platform>
+		<platform id="arcade">Arcade</platform>
+		<platform id="nintendo-ds">Nintendo DS</platform>
+		<platform id="playstation-2">PlayStation 2</platform>
+		<platform id="playstation-3">PlayStation 3</platform>
+		<platform id="xbox">Xbox</platform>
+		<platform id="xbox-360">Xbox 360</platform>
+	</platforms>
+
+	<games>
+		<game id="civ4" sector="Education" purpose="Games for Education" developer="firaxis">
+			<title>Civilization IV</title>
+			<year>2005</year>
+			<summary>A turn-based strategy game in which you lead a civilisation from the ancient age to the modern day.</summary>
+			<description>Players found cities, research technologies, trade and wage diplomacy across thousands of years of history. The Sawyer and Smith taxonomy lists Civilization IV among commercial entertainment games repurposed for education, because it can be used in class to discuss history, geography, economics and politics.</description>
+			<learningGoal>Understand how geography, resources, technology and diplomacy shape the development of societies.</learningGoal>
+			<targetAudience>Teenagers and adults; history and social-studies students.</targetAudience>
+			<playerMode>Single-player and multiplayer</playerMode>
+			<access>Paid</access>
+			<platforms>
+				<platform ref="windows" />
+				<platform ref="macos" />
+			</platforms>
+			<cover source="civ4_cover" alt="Civilization IV box art" credit="Firaxis Games / 2K &#183; via Wikipedia (non-free cover, used for identification)" />
+			<related>
+				<game title="Assassin's Creed II" year="2009" reason="Another commercial game used to explore history" />
+				<game title="The Movies" year="2005" reason="Another commercial game repurposed for a new use" />
+			</related>
+		</game>
+
+		<game id="ac2" sector="Education" purpose="Games for Education" developer="ubisoft-montreal">
+			<title>Assassin's Creed II</title>
+			<year>2009</year>
+			<summary>An action-adventure set in Renaissance Italy, cited as an entertainment game close to cultural-heritage games.</summary>
+			<description>The player explores recreated Florence and Venice and meets historical figures such as Leonardo da Vinci, Machiavelli and Pope Alexander VI. Bontchev's article on serious games and cultural heritage uses it as an example of an entertainment game that conveys the spirit of an epoch with great visual and cultural accuracy.</description>
+			<learningGoal>Experience the setting, architecture and people of 15th-century Italy.</learningGoal>
+			<targetAudience>Teenagers and adults; history and art enthusiasts.</targetAudience>
+			<playerMode>Single-player</playerMode>
+			<access>Paid</access>
+			<platforms>
+				<platform ref="playstation-3" />
+				<platform ref="xbox-360" />
+				<platform ref="windows" />
+				<platform ref="macos" />
+			</platforms>
+			<cover source="ac2_cover" alt="Assassin's Creed II box art" credit="Ubisoft &#183; via Wikipedia (non-free cover, used for identification)" />
+			<related>
+				<game title="Civilization IV" year="2005" reason="Another commercial game used to explore history" />
+			</related>
+		</game>
+
+		<game id="brainage" sector="Healthcare" purpose="Games for Health" developer="nintendo">
+			<title>Brain Age</title>
+			<year>2005</year>
+			<summary>A Nintendo DS puzzle game with short daily mental exercises, inspired by a neuroscientist's work.</summary>
+			<description>Based on the research of Dr Ryuta Kawashima, the game offers quick calculation, reading and memory tasks and tracks a "brain age" over time. It is listed among the health games of the Sawyer and Smith taxonomy. Its real effect on cognition is debated.</description>
+			<learningGoal>Practise mental agility through daily short exercises.</learningGoal>
+			<targetAudience>Adults of all ages.</targetAudience>
+			<playerMode>Single-player</playerMode>
+			<access>Paid</access>
+			<platforms>
+				<platform ref="nintendo-ds" />
+			</platforms>
+			<cover source="brainage_cover" alt="Brain Age box art" credit="Nintendo &#183; via Wikipedia (non-free cover, used for identification)" />
+			<related>
+				<game title="Dance Dance Revolution" year="1998" reason="Another game used for health" />
+				<game title="Foldit" year="2008" reason="Another puzzle game with a serious purpose" />
+			</related>
+		</game>
+
+		<game id="ddr" sector="Healthcare" purpose="Games for Health" developer="konami">
+			<title>Dance Dance Revolution</title>
+			<year>1998</year>
+			<summary>Players step on arrows on a dance platform in time with the music, which makes it an exercise game.</summary>
+			<description>Introduced in Japan in 1998, it popularised video games as a medium for fitness. Home versions can estimate the calories burned, and it has been used in school fitness programmes, for example in West Virginia.</description>
+			<learningGoal>Encourage regular physical activity and improve stamina and coordination.</learningGoal>
+			<targetAudience>Children, teenagers and adults.</targetAudience>
+			<playerMode>Single-player and multiplayer</playerMode>
+			<access>Paid</access>
+			<platforms>
+				<platform ref="arcade" />
+				<platform ref="playstation-2" />
+			</platforms>
+			<cover source="ddr_cover" alt="Dance Dance Revolution 20th anniversary arcade cabinet" credit="Luigi.a.cruz &#183; Wikimedia Commons &#183; CC0" />
+			<related>
+				<game title="Brain Age" year="2005" reason="Another game used for health" />
+			</related>
+		</game>
+
+		<game id="americasarmy" sector="Defense" purpose="Advergames" developer="us-army">
+			<title>America's Army</title>
+			<year>2002</year>
+			<summary>A free online shooter made by the US Army to inform the public and attract recruits.</summary>
+			<description>Players complete virtual basic training and then join team-based online missions that stress teamwork and the Army values. The Sawyer and Smith taxonomy lists it as an advergame of the defense sector.</description>
+			<learningGoal>Present army roles, procedures and values, and raise interest in a military career.</learningGoal>
+			<targetAudience>Teenagers and young adults who like team-based shooters.</targetAudience>
+			<playerMode>Multiplayer</playerMode>
+			<access>Free</access>
+			<platforms>
+				<platform ref="windows" />
+			</platforms>
+			<cover source="americasarmy_cover" alt="America's Army box art" credit="United States Army &#183; Wikimedia Commons &#183; Public domain" />
+			<related>
+				<game title="Full Spectrum Warrior" year="2004" reason="Another military game, used for training" />
+			</related>
+		</game>
+
+		<game id="fullspectrum" sector="Defense" purpose="Games for Training" developer="pandemic">
+			<title>Full Spectrum Warrior</title>
+			<year>2004</year>
+			<summary>Command two infantry fire teams in urban combat; it grew out of a US Army training project.</summary>
+			<description>Instead of shooting directly, the player gives orders to two fire teams and must use cover, suppression and flanking. The game began as a US Army project with the Institute for Creative Technologies, and a separate military version was used for training.</description>
+			<learningGoal>Practise small-unit tactics and decision-making.</learningGoal>
+			<targetAudience>Adults; military trainees.</targetAudience>
+			<playerMode>Single-player and multiplayer</playerMode>
+			<access>Paid</access>
+			<platforms>
+				<platform ref="xbox" />
+				<platform ref="windows" />
+				<platform ref="playstation-2" />
+			</platforms>
+			<cover source="fullspectrum_cover" alt="Full Spectrum Warrior PC cover" credit="Pandemic Studios / THQ &#183; via Wikipedia (non-free cover, used for identification)" />
+			<related>
+				<game title="America's Army" year="2002" reason="Another military game, used to promote the army" />
+			</related>
+		</game>
+
+		<game id="themovies" sector="Marketing &amp; Communications" purpose="Production" developer="lionhead">
+			<title>The Movies</title>
+			<year>2005</year>
+			<summary>Run a Hollywood film studio and make your own films, which can be exported from the game.</summary>
+			<description>The player builds sets, hires actors and directors, and then edits films from scenes recorded in the game. The Sawyer and Smith taxonomy lists it under production, together with other tools for making machinima.</description>
+			<learningGoal>Learn the basics of filmmaking and film production management.</learningGoal>
+			<targetAudience>Teenagers and adults; amateur filmmakers.</targetAudience>
+			<playerMode>Single-player</playerMode>
+			<access>Paid</access>
+			<platforms>
+				<platform ref="windows" />
+				<platform ref="macos" />
+			</platforms>
+			<cover source="themovies_cover" alt="The Movies cover art" credit="Lionhead Studios / Activision &#183; via Wikipedia (non-free cover, used for identification)" />
+			<related>
+				<game title="Civilization IV" year="2005" reason="Another commercial game repurposed for a new use" />
+			</related>
+		</game>
+
+		<game id="foldit" sector="Healthcare" purpose="Games for Science and Research" developer="uw-gcs">
+			<title>Foldit</title>
+			<year>2008</year>
+			<summary>A puzzle game in which players fold protein structures and contribute to real biochemistry research.</summary>
+			<description>Foldit turns protein folding into a competitive puzzle. Players manipulate a 3D protein model to reach the lowest-energy shape, and the best solutions are analysed by scientists. Player-found structures have been used in published research.</description>
+			<learningGoal>Understand protein structure and take part in crowdsourced scientific discovery.</learningGoal>
+			<targetAudience>Teenagers and adults; science enthusiasts and students of biology or chemistry.</targetAudience>
+			<playerMode>Single-player and multiplayer</playerMode>
+			<access>Free</access>
+			<platforms>
+				<platform ref="windows" />
+				<platform ref="macos" />
+				<platform ref="linux" />
+			</platforms>
+			<cover source="foldit_cover" alt="Foldit: a player folding a protein" credit="Animation Research Labs, University of Washington &#183; Wikimedia Commons &#183; CC BY-SA 3.0 de" />
+			<link>https://fold.it</link>
+			<related>
+				<game title="Brain Age" year="2005" reason="Another puzzle game with a serious purpose" />
+			</related>
+		</game>
+	</games>
+</catalogue>

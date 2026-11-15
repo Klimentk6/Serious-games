@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  XML Schema за "Каталог на сериозни видеоигри - 2" (тема 46).
+  Връзките са описани чрез (съставни) ключове xs:key и референции xs:keyref:
+    - classificationKey (sector, purpose) : СЪСТАВЕН ключ - клетка от таксономията на Sawyer & Smith
+    - game/@sector + @purpose             : СЪСТАВНА референция към classificationKey
+    - gameKey (title, year)               : СЪСТАВЕН ключ за игра
+    - game/related/game (@title, @year)   : СЪСТАВНА референция към gameKey ("See also")
+    - sectorKey, purposeKey, developerKey, platformKey : прости ключове + референции
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified">
+
+    <!-- ===================== Корен ===================== -->
+    <xs:element name="catalogue">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="taxonomy" type="taxonomyType" />
+                <xs:element name="developers" type="developersType" />
+                <xs:element name="platforms" type="platformsType" />
+                <xs:element name="games" type="gamesType" />
+            </xs:sequence>
+        </xs:complexType>
+
+        <!-- Сектори и цели (оси на матрицата) -->
+        <xs:key name="sectorKey">
+            <xs:selector xpath="taxonomy/sectors/sector" />
+            <xs:field xpath="@name" />
+        </xs:key>
+        <xs:key name="purposeKey">
+            <xs:selector xpath="taxonomy/purposes/purpose" />
+            <xs:field xpath="@name" />
+        </xs:key>
+        <xs:keyref name="classificationSectorRef" refer="sectorKey">
+            <xs:selector xpath="taxonomy/classifications/classification" />
+            <xs:field xpath="@sector" />
+        </xs:keyref>
+        <xs:keyref name="classificationPurposeRef" refer="purposeKey">
+            <xs:selector xpath="taxonomy/classifications/classification" />
+            <xs:field xpath="@purpose" />
+        </xs:keyref>
+
+        <!-- СЪСТАВЕН КЛЮЧ: клетка (сектор, цел) от матрицата -->
+        <xs:key name="classificationKey">
+            <xs:selector xpath="taxonomy/classifications/classification" />
+            <xs:field xpath="@sector" />
+            <xs:field xpath="@purpose" />
+        </xs:key>
+        <!-- СЪСТАВНА РЕФЕРЕНЦИЯ: играта сочи към клетка от матрицата -->
+        <xs:keyref name="gameClassificationRef" refer="classificationKey">
+            <xs:selector xpath="games/game" />
+            <xs:field xpath="@sector" />
+            <xs:field xpath="@purpose" />
+        </xs:keyref>
+
+        <!-- СЪСТАВЕН КЛЮЧ: играта се определя еднозначно от заглавие и година -->
+        <xs:key name="gameKey">
+            <xs:selector xpath="games/game" />
+            <xs:field xpath="title" />
+            <xs:field xpath="year" />
+        </xs:key>
+        <!-- СЪСТАВНА РЕФЕРЕНЦИЯ: свързаните игри ("See also") сочат към gameKey -->
+        <xs:keyref name="relatedGameRef" refer="gameKey">
+            <xs:selector xpath="games/game/related/game" />
+            <xs:field xpath="@title" />
+            <xs:field xpath="@year" />
+        </xs:keyref>
+
+        <xs:key name="developerKey">
+            <xs:selector xpath="developers/developer" />
+            <xs:field xpath="@id" />
+        </xs:key>
+        <xs:keyref name="gameDeveloperRef" refer="developerKey">
+            <xs:selector xpath="games/game" />
+            <xs:field xpath="@developer" />
+        </xs:keyref>
+
+        <xs:key name="platformKey">
+            <xs:selector xpath="platforms/platform" />
+            <xs:field xpath="@id" />
+        </xs:key>
+        <xs:keyref name="gamePlatformRef" refer="platformKey">
+            <xs:selector xpath="games/game/platforms/platform" />
+            <xs:field xpath="@ref" />
+        </xs:keyref>
+    </xs:element>
+
+    <!-- ===================== Таксономия: сектор x цел ===================== -->
+    <xs:complexType name="taxonomyType">
+        <xs:sequence>
+            <xs:element name="source" type="nonEmptyString" />
+            <xs:element name="sectors">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="sector" minOccurs="7" maxOccurs="7">
+                            <xs:complexType>
+                                <xs:attribute name="name" type="sectorType" use="required" />
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="purposes">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="purpose" minOccurs="7" maxOccurs="7">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="description" type="nonEmptyString" />
+                                </xs:sequence>
+                                <xs:attribute name="name" type="purposeType" use="required" />
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <!-- 7 x 7 = 49 клетки от слайда "Taxonomy of Serious Games" -->
+            <xs:element name="classifications">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="classification" minOccurs="49" maxOccurs="49">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="label" type="nonEmptyString" />
+                                </xs:sequence>
+                                <xs:attribute name="sector" type="sectorType" use="required" />
+                                <xs:attribute name="purpose" type="purposeType" use="required" />
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- Sector (редове на матрицата) -->
+    <xs:simpleType name="sectorType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Government &amp; NGO" />
+            <xs:enumeration value="Defense" />
+            <xs:enumeration value="Healthcare" />
+            <xs:enumeration value="Marketing &amp; Communications" />
+            <xs:enumeration value="Education" />
+            <xs:enumeration value="Corporate" />
+            <xs:enumeration value="Industry" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!-- Purpose (колони на матрицата) -->
+    <xs:simpleType name="purposeType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Games for Health" />
+            <xs:enumeration value="Advergames" />
+            <xs:enumeration value="Games for Training" />
+            <xs:enumeration value="Games for Education" />
+            <xs:enumeration value="Games for Science and Research" />
+            <xs:enumeration value="Production" />
+            <xs:enumeration value="Games as Work" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!-- ===================== Разработчици ===================== -->
+    <xs:complexType name="developersType">
+        <xs:sequence>
+            <xs:element name="developer" type="developerType" minOccurs="1" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="developerType">
+        <xs:sequence>
+            <xs:element name="name" type="nonEmptyString" />
+            <xs:element name="country" type="nonEmptyString" />
+        </xs:sequence>
+        <xs:attribute name="id" type="idToken" use="required" />
+        <xs:attribute name="kind" use="required">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="Academic" />
+                    <xs:enumeration value="Non-profit" />
+                    <xs:enumeration value="Government" />
+                    <xs:enumeration value="Commercial" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+    </xs:complexType>
+
+    <!-- ===================== Платформи ===================== -->
+    <xs:complexType name="platformsType">
+        <xs:sequence>
+            <xs:element name="platform" type="platformType" minOccurs="1" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="platformType">
+        <xs:simpleContent>
+            <xs:extension base="nonEmptyString">
+                <xs:attribute name="id" type="idToken" use="required" />
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <!-- ===================== Игри ===================== -->
+    <xs:complexType name="gamesType">
+        <xs:sequence>
+            <xs:element name="game" type="gameType" minOccurs="7" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="gameType">
+        <xs:sequence>
+            <xs:element name="title" type="nonEmptyString" />
+            <xs:element name="year" type="yearType" />
+            <xs:element name="summary" type="summaryType" />
+            <xs:element name="description" type="nonEmptyString" />
+            <xs:element name="learningGoal" type="nonEmptyString" />
+            <xs:element name="targetAudience" type="nonEmptyString" />
+            <xs:element name="playerMode" type="playerModeType" />
+            <xs:element name="access" type="accessType" />
+            <xs:element name="platforms" type="gamePlatformsType" />
+            <xs:element name="cover" type="imageType" />
+            <xs:element name="gallery" type="galleryType" minOccurs="0" />
+            <xs:element name="link" type="xs:anyURI" minOccurs="0" />
+            <xs:element name="related" type="relatedType" minOccurs="0" />
+        </xs:sequence>
+        <xs:attribute name="id" type="xs:ID" use="required" />
+        <!-- съставна референция към classificationKey (sector + purpose) -->
+        <xs:attribute name="sector" type="sectorType" use="required" />
+        <xs:attribute name="purpose" type="purposeType" use="required" />
+        <xs:attribute name="developer" type="idToken" use="required" />
+    </xs:complexType>
+
+    <!-- Свързани игри: съставна референция (title, year) към gameKey -->
+    <xs:complexType name="relatedType">
+        <xs:sequence>
+            <xs:element name="game" minOccurs="1" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:attribute name="title" type="nonEmptyString" use="required" />
+                    <xs:attribute name="year" type="yearType" use="required" />
+                    <xs:attribute name="reason" type="nonEmptyString" use="required" />
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="gamePlatformsType">
+        <xs:sequence>
+            <xs:element name="platform" minOccurs="1" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:attribute name="ref" type="idToken" use="required" />
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="galleryType">
+        <xs:sequence>
+            <xs:element name="image" type="imageType" minOccurs="1" maxOccurs="20" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- Графично съдържание чрез XML entities (unparsed, декларирани с NDATA в DOCTYPE) -->
+    <xs:complexType name="imageType">
+        <xs:attribute name="source" type="xs:ENTITY" use="required" />
+        <xs:attribute name="alt" type="xs:string" />
+        <!-- автор / източник / лиценз (нужен е при CC BY и CC BY-SA) -->
+        <xs:attribute name="credit" type="nonEmptyString" />
+    </xs:complexType>
+
+    <!-- ===================== Прости типове ===================== -->
+    <xs:simpleType name="nonEmptyString">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="summaryType">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="10" />
+            <xs:maxLength value="200" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="idToken">
+        <xs:restriction base="xs:token">
+            <xs:pattern value="[a-z][a-z0-9\-]*" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="yearType">
+        <xs:restriction base="xs:gYear">
+            <xs:minInclusive value="1990" />
+            <xs:maxInclusive value="2030" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="playerModeType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Single-player" />
+            <xs:enumeration value="Multiplayer" />
+            <xs:enumeration value="Single-player and multiplayer" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="accessType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Free" />
+            <xs:enumeration value="Paid" />
+            <xs:enumeration value="Licence" />
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>
