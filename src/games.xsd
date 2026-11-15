@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  XML Schema за "Каталог на сериозни видеоигри - 2" (тема 46).
-  Връзките са описани чрез (съставни) ключове xs:key и референции xs:keyref:
-    - classificationKey (sector, purpose) : СЪСТАВЕН ключ - клетка от таксономията на Sawyer & Smith
-    - game/@sector + @purpose             : СЪСТАВНА референция към classificationKey
-    - gameKey (title, year)               : СЪСТАВЕН ключ за игра
-    - game/related/game (@title, @year)   : СЪСТАВНА референция към gameKey ("See also")
-    - sectorKey, purposeKey, developerKey, platformKey : прости ключове + референции
+  XML Schema for the Serious Games Catalogue.
+  Relations are described with (composite) keys xs:key and references xs:keyref:
+    - classificationKey (sector, purpose) : COMPOSITE key - a cell of the Sawyer & Smith taxonomy
+    - game/@sector + @purpose             : COMPOSITE reference to classificationKey
+    - gameKey (title, year)               : COMPOSITE key of a game
+    - game/related/game (@title, @year)   : COMPOSITE reference to gameKey ("See also")
+    - sectorKey, purposeKey, developerKey, platformKey : simple keys + references
 -->
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified">
 
-    <!-- ===================== Корен ===================== -->
+    <!-- ===================== Root ===================== -->
     <xs:element name="catalogue">
         <xs:complexType>
             <xs:sequence>
@@ -21,7 +21,7 @@
             </xs:sequence>
         </xs:complexType>
 
-        <!-- Сектори и цели (оси на матрицата) -->
+        <!-- Sectors and purposes (axes of the taxonomy grid) -->
         <xs:key name="sectorKey">
             <xs:selector xpath="taxonomy/sectors/sector" />
             <xs:field xpath="@name" />
@@ -39,26 +39,26 @@
             <xs:field xpath="@purpose" />
         </xs:keyref>
 
-        <!-- СЪСТАВЕН КЛЮЧ: клетка (сектор, цел) от матрицата -->
+        <!-- COMPOSITE KEY: a (sector, purpose) cell of the taxonomy grid -->
         <xs:key name="classificationKey">
             <xs:selector xpath="taxonomy/classifications/classification" />
             <xs:field xpath="@sector" />
             <xs:field xpath="@purpose" />
         </xs:key>
-        <!-- СЪСТАВНА РЕФЕРЕНЦИЯ: играта сочи към клетка от матрицата -->
+        <!-- COMPOSITE REFERENCE: a game points to a cell of the grid -->
         <xs:keyref name="gameClassificationRef" refer="classificationKey">
             <xs:selector xpath="games/game" />
             <xs:field xpath="@sector" />
             <xs:field xpath="@purpose" />
         </xs:keyref>
 
-        <!-- СЪСТАВЕН КЛЮЧ: играта се определя еднозначно от заглавие и година -->
+        <!-- COMPOSITE KEY: a game is identified by its title and year -->
         <xs:key name="gameKey">
             <xs:selector xpath="games/game" />
             <xs:field xpath="title" />
             <xs:field xpath="year" />
         </xs:key>
-        <!-- СЪСТАВНА РЕФЕРЕНЦИЯ: свързаните игри ("See also") сочат към gameKey -->
+        <!-- COMPOSITE REFERENCE: related games ("See also") point to gameKey -->
         <xs:keyref name="relatedGameRef" refer="gameKey">
             <xs:selector xpath="games/game/related/game" />
             <xs:field xpath="@title" />
@@ -84,7 +84,7 @@
         </xs:keyref>
     </xs:element>
 
-    <!-- ===================== Таксономия: сектор x цел ===================== -->
+    <!-- ===================== Taxonomy: sector x purpose ===================== -->
     <xs:complexType name="taxonomyType">
         <xs:sequence>
             <xs:element name="source" type="nonEmptyString" />
@@ -113,7 +113,7 @@
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
-            <!-- 7 x 7 = 49 клетки от слайда "Taxonomy of Serious Games" -->
+            <!-- 7 x 7 = 49 cells of the slide "Taxonomy of Serious Games" -->
             <xs:element name="classifications">
                 <xs:complexType>
                     <xs:sequence>
@@ -132,7 +132,7 @@
         </xs:sequence>
     </xs:complexType>
 
-    <!-- Sector (редове на матрицата) -->
+    <!-- Sector (rows of the grid) -->
     <xs:simpleType name="sectorType">
         <xs:restriction base="xs:string">
             <xs:enumeration value="Government &amp; NGO" />
@@ -145,7 +145,7 @@
         </xs:restriction>
     </xs:simpleType>
 
-    <!-- Purpose (колони на матрицата) -->
+    <!-- Purpose (columns of the grid) -->
     <xs:simpleType name="purposeType">
         <xs:restriction base="xs:string">
             <xs:enumeration value="Games for Health" />
@@ -158,7 +158,7 @@
         </xs:restriction>
     </xs:simpleType>
 
-    <!-- ===================== Разработчици ===================== -->
+    <!-- ===================== Developers ===================== -->
     <xs:complexType name="developersType">
         <xs:sequence>
             <xs:element name="developer" type="developerType" minOccurs="1" maxOccurs="unbounded" />
@@ -183,7 +183,7 @@
         </xs:attribute>
     </xs:complexType>
 
-    <!-- ===================== Платформи ===================== -->
+    <!-- ===================== Platforms ===================== -->
     <xs:complexType name="platformsType">
         <xs:sequence>
             <xs:element name="platform" type="platformType" minOccurs="1" maxOccurs="unbounded" />
@@ -198,7 +198,7 @@
         </xs:simpleContent>
     </xs:complexType>
 
-    <!-- ===================== Игри ===================== -->
+    <!-- ===================== Games ===================== -->
     <xs:complexType name="gamesType">
         <xs:sequence>
             <xs:element name="game" type="gameType" minOccurs="7" maxOccurs="unbounded" />
@@ -222,13 +222,13 @@
             <xs:element name="related" type="relatedType" minOccurs="0" />
         </xs:sequence>
         <xs:attribute name="id" type="xs:ID" use="required" />
-        <!-- съставна референция към classificationKey (sector + purpose) -->
+        <!-- composite reference to classificationKey (sector + purpose) -->
         <xs:attribute name="sector" type="sectorType" use="required" />
         <xs:attribute name="purpose" type="purposeType" use="required" />
         <xs:attribute name="developer" type="idToken" use="required" />
     </xs:complexType>
 
-    <!-- Свързани игри: съставна референция (title, year) към gameKey -->
+    <!-- Related games: composite reference (title, year) to gameKey -->
     <xs:complexType name="relatedType">
         <xs:sequence>
             <xs:element name="game" minOccurs="1" maxOccurs="unbounded">
@@ -257,15 +257,15 @@
         </xs:sequence>
     </xs:complexType>
 
-    <!-- Графично съдържание чрез XML entities (unparsed, декларирани с NDATA в DOCTYPE) -->
+    <!-- Graphic content through XML entities (unparsed, declared with NDATA in the DOCTYPE) -->
     <xs:complexType name="imageType">
         <xs:attribute name="source" type="xs:ENTITY" use="required" />
         <xs:attribute name="alt" type="xs:string" />
-        <!-- автор / източник / лиценз (нужен е при CC BY и CC BY-SA) -->
+        <!-- author / source / licence (required by CC BY and CC BY-SA) -->
         <xs:attribute name="credit" type="nonEmptyString" />
     </xs:complexType>
 
-    <!-- ===================== Прости типове ===================== -->
+    <!-- ===================== Simple types ===================== -->
     <xs:simpleType name="nonEmptyString">
         <xs:restriction base="xs:string">
             <xs:minLength value="1" />

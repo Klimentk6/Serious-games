@@ -53,7 +53,7 @@ main { max-width: 1200px; margin: 0 auto; padding: 24px 16px 48px; }
     font-size: 0.95rem;
     color: var(--text);
 }
-/* Без JavaScript (static) контролите нямат ефект, затова се скриват */
+/* Without JavaScript (static) the controls do nothing, so they are hidden */
 body.static .toolbar,
 body.static .showMoreBut { display: none; }
 
@@ -76,7 +76,7 @@ body.static .showMoreBut { display: none; }
     transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 .card:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(15, 23, 42, 0.14); }
-/* contain: кориците са с различни пропорции (кутии, лога, снимки) - нищо не се изрязва */
+/* contain: covers have different proportions (boxes, logos, screenshots) - nothing is cropped */
 .card-img { width: 100%; aspect-ratio: 3 / 2; object-fit: contain; display: block; background: #e5e7eb; }
 .card-body { display: flex; flex-direction: column; flex: 1; padding: 16px; }
 .card-body h2 { margin: 0 0 8px; font-size: 1.2rem; }
@@ -151,7 +151,7 @@ body.static .showMoreBut { display: none; }
     .toolbar label { width: 100%; }
 }
 
-/* ---------- Свързани игри ("See also") ---------- */
+/* ---------- Related games ("See also") ---------- */
 .related-title { margin: 24px 0 8px; font-size: 1rem; }
 .related { margin: 0; padding-left: 20px; }
 .related li { margin-bottom: 4px; }

@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  XSLT 1.0 трансформация за "Каталог на сериозни видеоигри - 2" (тема 46).
-  Работи по два начина:
-    1) директно през <?xml-stylesheet?> в games.xml (първоначално зареждане);
-    2) през XSLTProcessor от JavaScript (loadDocument=false) - при сортиране, филтриране и детайли.
-  Състоянието се предава чрез параметри на стилистичния лист.
-  Класификация на играта: сектор (Sector, редове) x цел (Purpose, колони) - таксономия на Sawyer & Smith.
+  XSLT 1.0 transformation for the Serious Games Catalogue.
+  It works in two ways:
+    1) directly through <?xml-stylesheet?> in games.xml (first page load);
+    2) through XSLTProcessor from JavaScript (loadDocument=false) - when sorting, filtering and showing details.
+  The state is passed to the stylesheet as parameters.
+  Classification of a game: sector (rows) x purpose (columns) - Sawyer & Smith taxonomy.
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
     <xsl:output method="html" encoding="UTF-8" indent="yes" />
 
-    <!-- Параметри (задават се от JavaScript) -->
+    <!-- Parameters (set from JavaScript) -->
     <xsl:param name="loadDocument">true</xsl:param>
     <xsl:param name="showAll">true</xsl:param>
     <xsl:param name="showId"></xsl:param>
@@ -23,7 +23,7 @@
     <xsl:param name="filterSector"></xsl:param>
     <xsl:param name="filterPurpose"></xsl:param>
 
-    <!-- Втори ключ за сортиране: сектор -> цел, цел -> сектор, иначе заглавие -->
+    <!-- Second sort key: sector -> purpose, purpose -> sector, otherwise title -->
     <xsl:variable name="secondary">
         <xsl:choose>
             <xsl:when test="$sortOn = 'sector'">purpose</xsl:when>
@@ -32,16 +32,16 @@
         </xsl:choose>
     </xsl:variable>
 
-    <!-- Ключове за бързо търсене -->
+    <!-- Keys for fast lookup -->
     <xsl:key name="developerById" match="developer" use="@id" />
     <xsl:key name="platformById" match="platform[@id]" use="@id" />
     <xsl:key name="purposeByName" match="purpose" use="@name" />
-    <!-- съставен ключ, огледален на classificationKey (sector, purpose) от XSD -->
+    <!-- composite key that mirrors classificationKey (sector, purpose) from the XSD -->
     <xsl:key name="classificationByPair" match="classification" use="concat(@sector, '|', @purpose)" />
-    <!-- съставен ключ, огледален на gameKey (title, year) от XSD -->
+    <!-- composite key that mirrors gameKey (title, year) from the XSD -->
     <xsl:key name="gameByTitleYear" match="/catalogue/games/game" use="concat(title, '|', year)" />
 
-    <!-- ===================== Входна точка ===================== -->
+    <!-- ===================== Entry point ===================== -->
     <xsl:template match="/">
         <xsl:choose>
             <xsl:when test="$loadDocument = 'true'">
@@ -53,7 +53,7 @@
         </xsl:choose>
     </xsl:template>
 
-    <!-- ===================== Пълна HTML страница ===================== -->
+    <!-- ===================== Full HTML page ===================== -->
     <xsl:template name="loadDocument">
         <html lang="en">
             <head>
@@ -71,7 +71,7 @@
                     <xsl:call-template name="loadContent" />
                 </main>
 
-                <!-- Съответствие "име на entity" -> реален адрес на картинката (unparsed-entity-uri) -->
+                <!-- Map "entity name" -> real image address (unparsed-entity-uri) -->
                 <script>
                     <xsl:text>var imageUrlsMap = [</xsl:text>
                     <xsl:for-each select="//*[@source]">
@@ -175,7 +175,7 @@ initialize();
         </html>
     </xsl:template>
 
-    <!-- ===================== Съдържание: списък или детайл ===================== -->
+    <!-- ===================== Content: list or details ===================== -->
     <xsl:template name="loadContent">
         <xsl:choose>
             <xsl:when test="$showAll = 'true'">
@@ -188,7 +188,7 @@ initialize();
         </xsl:choose>
     </xsl:template>
 
-    <!-- ===================== Панел за сортиране и филтриране ===================== -->
+    <!-- ===================== Sort and filter panel ===================== -->
     <xsl:template name="toolbar">
         <section class="toolbar" id="toolbar">
             <label>
@@ -246,7 +246,7 @@ initialize();
         </option>
     </xsl:template>
 
-    <!-- ===================== Списък с карти ===================== -->
+    <!-- ===================== List of cards ===================== -->
     <xsl:template name="gameList">
         <xsl:variable name="shown" select="/catalogue/games/game[($filterSector = '' or @sector = $filterSector) and ($filterPurpose = '' or @purpose = $filterPurpose)]" />
         <p class="result-count">
@@ -262,7 +262,7 @@ initialize();
 
         <div class="grid">
             <xsl:for-each select="/catalogue/games/game">
-                <!-- сортиране по два признака: избраният (елемент ИЛИ атрибут със зададено име), после вторият -->
+                <!-- two-level sort: the selected key (an element OR an attribute with that name), then the second key -->
                 <xsl:sort select="@*[name() = $sortOn] | *[name() = $sortOn]" data-type="{$sortType}" order="{$sortOrder}" />
                 <xsl:sort select="@*[name() = $secondary] | *[name() = $secondary]" data-type="text" order="ascending" />
 
@@ -288,7 +288,7 @@ initialize();
         </div>
     </xsl:template>
 
-    <!-- ===================== Детайли за една игра ===================== -->
+    <!-- ===================== Details of one game ===================== -->
     <xsl:template name="gameDetails">
         <xsl:variable name="g" select="/catalogue/games/game[@id = $showId]" />
         <xsl:variable name="cell" select="key('classificationByPair', concat($g/@sector, '|', $g/@purpose))" />
@@ -354,7 +354,7 @@ initialize();
                     <h3 class="related-title">See also</h3>
                     <ul class="related">
                         <xsl:for-each select="$g/related/game">
-                            <!-- съставна референция (title, year) към играта -->
+                            <!-- composite reference (title, year) to the game -->
                             <xsl:variable name="target" select="key('gameByTitleYear', concat(@title, '|', @year))" />
                             <li>
                                 <button type="button" class="link" onclick="showGame('{$target/@id}')">

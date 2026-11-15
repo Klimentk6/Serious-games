@@ -4,27 +4,25 @@ Catalogue of serious video games built with XML technologies: XML data with imag
 
 Course project No. 46, *Serious Video Games Catalogue – 2*, for **XML Technologies for the Semantic Web** (Sofia University "St. Kliment Ohridski", Faculty of Mathematics and Informatics, 2026).
 
-> **Накратко (BG):** каталог на 8 сериозни видеоигри, описани в XML, валидирани с XML Schema (със съставни ключове и референции) и показани в браузър чрез XSLT и CSS със сортиране и филтриране по сектор и цел според таксономията на Sawyer & Smith.
-
 ## What it demonstrates
 
 | Requirement of the assignment | Where it is done |
 |---|---|
-| Text and graphic content in XML | `games.xml` |
+| Text and graphic content in XML | `src/games.xml` |
 | Graphics through **XML entities** | every image is an unparsed entity (`<!ENTITY … SYSTEM "…" NDATA jpeg>`) declared in the `DOCTYPE` and referenced by `source="…"` |
-| Relations through **(composite) keys and key references** | `games.xsd`: `xs:key` / `xs:keyref` (see below) |
-| 7–8 games validated with **XML Schema** | 8 games, validated by `games.xsd` |
-| Presentation in a browser with **CSS and XSLT** | `games.xsl` (XSLT 1.0) and `styles.css` |
+| Relations through **(composite) keys and key references** | `src/games.xsd`: `xs:key` / `xs:keyref` (see below) |
+| 7–8 games validated with **XML Schema** | 8 games, validated by `src/games.xsd` |
+| Presentation in a browser with **CSS and XSLT** | `src/games.xsl` (XSLT 1.0) and `src/styles.css` |
 | **Sorting** by several properties | sector, purpose, title, year (two-level sort) |
 
 ### Taxonomy and keys
 
-The games are classified with the taxonomy of Ben Sawyer and Peter Smith, *Serious Games Taxonomy* (2008): a grid of **7 sectors (rows) × 7 purposes (columns) = 49 cells**. All 49 cells and their labels are stored in `games.xml`.
+The games are classified with the taxonomy of Ben Sawyer and Peter Smith, *Serious Games Taxonomy* (2008): a grid of **7 sectors (rows) × 7 purposes (columns) = 49 cells**. All 49 cells and their labels are stored in `src/games.xml`.
 
 - **Sectors:** Government & NGO, Defense, Healthcare, Marketing & Communications, Education, Corporate, Industry.
 - **Purposes:** Games for Health, Advergames, Games for Training, Games for Education, Games for Science and Research, Production, Games as Work.
 
-Composite keys in `games.xsd`:
+Composite keys in `src/games.xsd`:
 
 | Key | Fields | Referenced by |
 |---|---|---|
@@ -58,21 +56,22 @@ The XML file points to the stylesheet with `<?xml-stylesheet href="games.xsl" ty
 
 ## Running it
 
-The browser has to load the XSL and XML over HTTP, so open the project through a local server (opening the file directly from disk does not work in Chromium-based browsers):
+The browser has to load the XSL and XML over HTTP, so open the project through a local server started in the `src` folder (opening the file directly from disk does not work in Chromium-based browsers):
 
 ```bash
+cd src
 python3 -m http.server 8080
 ```
 
 Then open <http://localhost:8080/games.xml>. An internet connection is needed to see the images.
 
-Validate the data against the schema:
+Validate the data against the schema (from the `src` folder):
 
 ```bash
 xmllint --noout --schema games.xsd games.xml
 ```
 
-Try the transformation without a browser:
+Try the transformation without a browser (from the `src` folder):
 
 ```bash
 xsltproc games.xsl games.xml
@@ -81,13 +80,14 @@ xsltproc --stringparam loadDocument false --stringparam sortOn purpose games.xsl
 
 ## Project structure
 
-| File | Purpose |
+| Path | Purpose |
 |---|---|
-| `games.xml` | Data: taxonomy (49 cells), developers, platforms, 8 games, image entities |
-| `games.xsd` | XML Schema with all keys and key references |
-| `games.xsl` | XSLT 1.0 transformation, including the small script for sorting and filtering |
-| `styles.css` | Styling |
+| `src/games.xml` | Data: taxonomy (49 cells), developers, platforms, 8 games, image entities |
+| `src/games.xsd` | XML Schema with all keys and key references |
+| `src/games.xsl` | XSLT 1.0 transformation, including the small script for sorting and filtering |
+| `src/styles.css` | Styling |
 | `CLAUDE.md` | Notes about the project for AI coding assistants |
+| `LICENSE` | MIT license |
 
 ## Images
 

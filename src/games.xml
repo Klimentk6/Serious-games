@@ -4,8 +4,7 @@
 	<!NOTATION jpeg SYSTEM "image/jpeg">
 	<!NOTATION png  SYSTEM "image/png">
 
-	<!-- Корици: външни адреси (Wikimedia Commons / Wikipedia), без локални файлове -
-	     по същия начин, по който example_project сочи към cf.bstatic.com. -->
+	<!-- Covers: images are loaded from the web (Wikimedia Commons / Wikipedia); no image files are stored locally. -->
 	<!ENTITY civ4_cover         SYSTEM "https://upload.wikimedia.org/wikipedia/en/7/7e/CivIVboxshot.jpg" NDATA jpeg>
 	<!ENTITY ac2_cover          SYSTEM "https://upload.wikimedia.org/wikipedia/en/7/77/Assassins_Creed_2_Box_Art.JPG" NDATA jpeg>
 	<!ENTITY brainage_cover     SYSTEM "https://upload.wikimedia.org/wikipedia/en/e/ef/NDS_BrainTrainingForAdults.jpg" NDATA jpeg>
@@ -18,9 +17,9 @@
 <catalogue xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="games.xsd">
 
 	<!-- ====================================================================
-	     Таксономия на Sawyer & Smith (2008), слайд "Taxonomy of Serious Games":
-	     редове = сектор (sector), колони = цел (purpose), 7 x 7 = 49 клетки.
-	     Всяка клетка се идентифицира със СЪСТАВЕН ключ (sector, purpose).
+	     Sawyer & Smith taxonomy (2008), slide "Taxonomy of Serious Games":
+	     rows = sector, columns = purpose, 7 x 7 = 49 cells.
+	     Every cell is identified by the COMPOSITE key (sector, purpose).
 	     ==================================================================== -->
 	<taxonomy>
 		<source>B. Sawyer, P. Smith, "Serious Games Taxonomy", Game Developers Conference / Serious Games Summit, 2008</source>
