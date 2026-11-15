@@ -13,7 +13,7 @@ Course project No. 46, *Serious Video Games Catalogue – 2*, for **XML Technolo
 | Relations through **(composite) keys and key references** | `src/serious_games.xsd`: `xs:key` / `xs:keyref` (see below) |
 | 7–8 games validated with **XML Schema** | 8 games, validated by `src/serious_games.xsd` |
 | Presentation in a browser with **CSS and XSLT** | `src/serious_games.xsl` (XSLT 1.0) and `src/styles.css` |
-| **Sorting** by several properties | sector, purpose, title, year (two-level sort) |
+| **Sorting** by several properties | sector, purpose, title (two-level sort) |
 
 ### Taxonomy and keys
 
@@ -27,7 +27,7 @@ Composite keys in `src/serious_games.xsd`:
 | Key | Fields | Referenced by |
 |---|---|---|
 | `classificationKey` | `(sector, purpose)` | every game (`gameClassificationRef`) |
-| `gameKey` | `(title, year)` | "See also" links between games (`relatedGameRef`) |
+| `gameKey` | `(title, year)` | links between related games in the data (`relatedGameRef`) |
 
 Simple keys and references are used for sectors, purposes, developers and platforms.
 
@@ -48,8 +48,8 @@ Most of them are named in the taxonomy presentation or in B. Bontchev, *Serious 
 
 ## The web page
 
-- A catalogue of game cards with a detail page for every game (classification, learning goal, audience, platforms, developer, "See also" links).
-- **Sort by** sector then purpose, purpose then sector, title or year, ascending or descending.
+- A catalogue of game cards with a detail page for every game (classification, learning goal, audience, platforms, developer, year).
+- **Sort by** sector then purpose, purpose then sector, title, ascending or descending.
 - **Filter by** sector and purpose.
 
 The XML file points to the stylesheet with `<?xml-stylesheet href="serious_games.xsl" type="text/xsl"?>`. The first page is rendered by the browser itself. After that, a small script re-runs the transformation with `XSLTProcessor` and parameters (sorting, filters, selected game), so the page updates without reloading.

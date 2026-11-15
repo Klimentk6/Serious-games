@@ -38,9 +38,6 @@
     <xsl:key name="purposeByName" match="purpose" use="@name" />
     <!-- composite key that mirrors classificationKey (sector, purpose) from the XSD -->
     <xsl:key name="classificationByPair" match="classification" use="concat(@sector, '|', @purpose)" />
-    <!-- composite key that mirrors gameKey (title, year) from the XSD -->
-    <xsl:key name="gameByTitleYear" match="/catalogue/games/game" use="concat(title, '|', year)" />
-
     <!-- ===================== Entry point ===================== -->
     <xsl:template match="/">
         <xsl:choose>
@@ -200,8 +197,6 @@ initialize();
                     <xsl:call-template name="sortOption"><xsl:with-param name="value" select="'purpose|descending|text'" /><xsl:with-param name="label" select="'Purpose, then sector (Z&#8211;A)'" /></xsl:call-template>
                     <xsl:call-template name="sortOption"><xsl:with-param name="value" select="'title|ascending|text'" /><xsl:with-param name="label" select="'Title A&#8211;Z'" /></xsl:call-template>
                     <xsl:call-template name="sortOption"><xsl:with-param name="value" select="'title|descending|text'" /><xsl:with-param name="label" select="'Title Z&#8211;A'" /></xsl:call-template>
-                    <xsl:call-template name="sortOption"><xsl:with-param name="value" select="'year|ascending|number'" /><xsl:with-param name="label" select="'Year (oldest first)'" /></xsl:call-template>
-                    <xsl:call-template name="sortOption"><xsl:with-param name="value" select="'year|descending|number'" /><xsl:with-param name="label" select="'Year (newest first)'" /></xsl:call-template>
                 </select>
             </label>
 
@@ -272,7 +267,6 @@ initialize();
                         <div class="card-body">
                             <h2>
                                 <xsl:value-of select="title" />
-                                <small><xsl:text> (</xsl:text><xsl:value-of select="year" /><xsl:text>)</xsl:text></small>
                             </h2>
                             <div class="badges">
                                 <span class="badge {concat('purpose-', translate(@purpose, ' ', '-'))}"><xsl:value-of select="@purpose" /></span>
@@ -305,7 +299,6 @@ initialize();
             <div class="details-body">
                 <h1>
                     <xsl:value-of select="$g/title" />
-                    <small><xsl:text> (</xsl:text><xsl:value-of select="$g/year" /><xsl:text>)</xsl:text></small>
                 </h1>
                 <div class="badges">
                     <span class="badge {concat('purpose-', translate($g/@purpose, ' ', '-'))}"><xsl:value-of select="$g/@purpose" /></span>
@@ -332,6 +325,8 @@ initialize();
                     <dd><xsl:value-of select="$g/playerMode" /></dd>
                     <dt>Access</dt>
                     <dd><xsl:value-of select="$g/access" /></dd>
+                    <dt>Year</dt>
+                    <dd><xsl:value-of select="$g/year" /></dd>
                     <dt>Platforms</dt>
                     <dd>
                         <xsl:for-each select="$g/platforms/platform">
@@ -349,22 +344,6 @@ initialize();
                         <dd><a href="{$g/link}" target="_blank" rel="noopener"><xsl:value-of select="$g/link" /></a></dd>
                     </xsl:if>
                 </dl>
-
-                <xsl:if test="$g/related/game">
-                    <h3 class="related-title">See also</h3>
-                    <ul class="related">
-                        <xsl:for-each select="$g/related/game">
-                            <!-- composite reference (title, year) to the game -->
-                            <xsl:variable name="target" select="key('gameByTitleYear', concat(@title, '|', @year))" />
-                            <li>
-                                <button type="button" class="link" onclick="showGame('{$target/@id}')">
-                                    <xsl:value-of select="@title" /> (<xsl:value-of select="@year" />)
-                                </button>
-                                <span class="muted"> &#8211; <xsl:value-of select="@reason" /></span>
-                            </li>
-                        </xsl:for-each>
-                    </ul>
-                </xsl:if>
 
                 <xsl:if test="$g/gallery/image">
                     <div class="gallery">

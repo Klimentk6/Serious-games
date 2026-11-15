@@ -9,7 +9,7 @@ A catalogue of serious video games based on XML with text and graphic content.
 - Graphics are represented with **XML entities** (unparsed `ENTITY` + `NDATA`, declared in the `DOCTYPE`).
 - Relations (games <-> the Sawyer & Smith taxonomy, games <-> related games, etc.) are described with **(composite) keys and references to them**: `xs:key` / `xs:keyref`. Not with ID/IDREF (that is the other variant of the assignment).
 - 7–8 games, validated with an **XML Schema** (XSD, not DTD).
-- Shown in an HTML browser with **CSS + XSLT**, with **sorting by several properties** (sector and purpose, title, year).
+- Shown in an HTML browser with **CSS + XSLT**, with **sorting by several properties** (sector and purpose, title).
 - Resources: the Sawyer & Smith serious games taxonomy; "Serious Games for and as Cultural Heritage" (B. Bontchev, 2015).
 
 ## Files
@@ -26,7 +26,7 @@ A catalogue of serious video games based on XML with text and graphic content.
 - **Taxonomy axes (from the slide "Taxonomy of Serious Games", Sawyer & Smith 2008):** rows = **Sector** (Government & NGO, Defense, Healthcare, Marketing & Communications, Education, Corporate, Industry), columns = **Purpose** (Games for Health, Advergames, Games for Training, Games for Education, Games for Science and Research, Production, Games as Work). The names Sector/Purpose were chosen by the project owner (alternatives: Industry/Market/Domain and Goal/Application).
 - **`classifications` contains all 49 cells (7x7)** with the text of the slide in `<label>` (for example Defense x Advergames = "Recruitment & Propaganda"). The XSD requires exactly 49.
 - **Composite key** `classificationKey` = `(@sector, @purpose)`. **Composite reference** `gameClassificationRef`: `game/@sector + game/@purpose` -> `classificationKey`.
-- **Composite key** `gameKey` = `(title, year)`. **Composite reference** `relatedGameRef`: `game/related/game/@title + @year` -> `gameKey` ("See also").
+- **Composite key** `gameKey` = `(title, year)`. **Composite reference** `relatedGameRef`: `game/related/game/@title + @year` -> `gameKey`. The data and schema keep the references, but the page no longer shows a "See also" list.
 - Simple keys: `sectorKey`, `purposeKey` (referenced by `classification/@sector|@purpose`), `developerKey` <- `game/@developer`, `platformKey` <- `game/platforms/platform/@ref`.
 - `game/@id` is an `xs:ID` used only by the JavaScript (`showGame(id)`), not for relations.
 - There are no genres. Developer and platform identifiers match `[a-z][a-z0-9-]*`.
@@ -48,8 +48,8 @@ Sources: Civilization IV, Brain Age, DDR, America's Army and The Movies appear i
 ## How the XSLT works
 - Parameters: `loadDocument`, `showAll`, `showId`, `sortOn`, `sortOrder`, `sortType`, `filterSector`, `filterPurpose`. Two views: a list of cards and the details of one game. The 49 cells stay in the XML and are used for the "Taxonomy cell" text in the details.
 - The first load is done directly by the browser through the processing instruction (`loadDocument=true`) and produces the whole page. After that, the embedded JavaScript fetches `serious_games.xsl` and `serious_games.xml`, runs `XSLTProcessor` with `loadDocument=false` and replaces only `#content`.
-- Sorting uses **two keys**: the selected one (`<xsl:sort select="@*[name()=$sortOn] | *[name()=$sortOn]">`, works for elements and attributes: `sector`, `purpose`, `title`, `year`) and a second one (`$secondary`: sector -> purpose, purpose -> sector, otherwise title). The values of `sector`/`purpose` are the names themselves, so the order is alphabetical.
-- The XSL keys `classificationByPair` (`concat(@sector,'|',@purpose)`) and `gameByTitleYear` mirror the composite keys of the XSD.
+- Sorting uses **two keys**: the selected one (`<xsl:sort select="@*[name()=$sortOn] | *[name()=$sortOn]">`, works for elements and attributes: `sector`, `purpose`, `title`) and a second one (`$secondary`: sector -> purpose, purpose -> sector, otherwise title). The values of `sector`/`purpose` are the names themselves, so the order is alphabetical.
+- The XSL key `classificationByPair` (`concat(@sector,'|',@purpose)`) mirrors the composite key `classificationKey` of the XSD.
 - Images: the template writes `src="{@source}"` (the name of the entity). The `imageUrlsMap` script (generated with `unparsed-entity-uri`) replaces the name with the real address. After `DOMParser` the information about entities is lost, which is why this trick is needed.
 - The JavaScript inside the XSL is wrapped in `CDATA` to avoid problems with the characters `<` and `&`.
 
